@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from urllib.parse import parse_qsl, quote, urlsplit
 from config import CLITENT_ID, CLITENT_SECRET
 import requests

@@ -2,11 +2,12 @@ import requests
 import json
 from os.path import join as pathjoin
 from typing import Optional, NamedTuple, Callable
+from .utils import pretty_size
 
 
 class FileInfo(NamedTuple):
     name: str
-    size: int
+    size: str
     last_update_date: str
 
 
@@ -146,7 +147,7 @@ class OneDrive:
         file_info_list = [
             FileInfo(
                 i["name"],
-                int(float(i["size"]) / 1024),
+                pretty_size(i["size"]),
                 i["lastModifiedDateTime"][0:10],
             )
             for i in r.json()["value"]

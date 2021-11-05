@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -8,7 +9,7 @@ app = FastAPI()
 try:
     onedrive = OneDrive.init_from_env()
 except KeyError:
-    onedrive = OneDrive.init_from_json("../auth.json")
+    onedrive = OneDrive.init_from_json(os.path.join(os.getcwd(), "auth.json"))
 
 templates = Jinja2Templates(directory="html_templates")
 

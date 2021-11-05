@@ -9,6 +9,7 @@ class FileInfo(NamedTuple):
     name: str
     size: str
     last_update_date: str
+    path: str
 
 
 class OneDrive:
@@ -147,8 +148,9 @@ class OneDrive:
         file_info_list = [
             FileInfo(
                 i["name"],
-                pretty_size(i["size"]),
+                " - " if "folder" in i else pretty_size(i["size"]),
                 i["lastModifiedDateTime"][0:10],
+                pathjoin(path, i["name"]),
             )
             for i in r.json()["value"]
         ]

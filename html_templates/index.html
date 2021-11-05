@@ -15,7 +15,7 @@
         </tr>
         {%- for file_info in file_info_list %}
         <tr>
-            <td><ol><a href="/{{ file_info.name }}" rel="noreferrer">{{ file_info.name }}</a></ol></td>
+            <td><ol><a href="/{{ file_info.path }}" rel="noreferrer">{{ file_info.name }}</a></ol></td>
             <td>{{ file_info.size }}</td>
             <td>{{ file_info.last_update_date }}</td>
         </tr>

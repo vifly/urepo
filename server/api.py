@@ -20,6 +20,9 @@ templates = Jinja2Templates(directory="html_templates")
 
 @app.get("/{file_path:path}")
 async def list_or_get_file(request: Request, file_path: str):
+    # encode illegal char
+    if ":" in file_path:
+        file_path = file_path.replace(":", "-colon-")
     is_folder = onedrive.is_folder(file_path)
     if is_folder is None:
         return HTTPException(404, f"{file_path} is not exist.")
@@ -32,4 +35,7 @@ async def list_or_get_file(request: Request, file_path: str):
         )
     else:
         download_link = onedrive.get_download_link(file_path)
-        return RedirectResponse(download_link, status_code=307)
+        if download_link:
+            return RedirectResponse(download_link, status_code=307)
+        else:
+            return HTTPException(404, f"{file_path} is not exist.")

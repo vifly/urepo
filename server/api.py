@@ -1,9 +1,16 @@
 import os
+import logging
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from storage.onedrive import OneDrive
 
+
+logging.basicConfig(
+    format="%(asctime)s [%(levelname)s] %(funcName)s(): %(message)s",
+    datefmt="%Y-%m-%d %H:%M",
+    level=logging.WARNING
+)
 
 app = FastAPI()
 try:
@@ -23,7 +30,12 @@ async def list_or_get_file(request: Request, file_path: str):
     # encode illegal char
     if ":" in file_path:
         file_path = file_path.replace(":", "-colon-")
-    is_folder = onedrive.is_folder(file_path)
+
+    try:
+        is_folder = onedrive.is_folder(file_path)
+    except Exception as exc:
+        logging.error(exc)
+        return HTTPException(500, "OneDrive API Error.")
     if is_folder is None:
         return HTTPException(404, f"{file_path} is not exist.")
     elif is_folder is True:
